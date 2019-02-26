@@ -1,6 +1,10 @@
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView,FormView
 from django.core.urlresolvers import reverse_lazy
+
+from django.core.mail import send_mail
+
+import schedule
 from django.forms import  Textarea
 # Create your views here.
 from home.models import Rule
@@ -40,7 +44,6 @@ class ProductEntry(CreateView):
        'Campaigns': MultiSelectFormField(choices=Rule.camps, max_length=11),
 
    }
-from django.core.mail import send_mail
 def fun():
     send_mail(
         'sub-Ravi-Testing of email',
@@ -61,3 +64,6 @@ def mainn():
     if(c>10):
         fun()
 
+schedule.every().minute.at(":17").do(mainn)
+
+schedule.run_pending()
